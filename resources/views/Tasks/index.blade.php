@@ -2,6 +2,8 @@
 
 @section('content')
 
+@include('users.users', ['users' => $users])
+
     <h1>タスクリスト</h1>
 
     @if (count($tasks) > 0)
@@ -26,5 +28,4 @@
     @endif
 
     {!! link_to_route('tasks.create', '新規タスクの作成', null, ['class' => 'btn btn-primary']) !!}
-
 @endsection
