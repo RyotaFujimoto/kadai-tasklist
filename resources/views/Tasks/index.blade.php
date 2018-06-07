@@ -2,7 +2,6 @@
 
 @section('content')
 
-@include('users.users', ['users' => $users])
 
     <h1>タスクリスト</h1>
 
