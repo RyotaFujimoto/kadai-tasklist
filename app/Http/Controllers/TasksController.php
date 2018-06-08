@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Task;
 
+use App\User;
 
 class TasksController extends Controller
 {
@@ -63,14 +64,9 @@ class TasksController extends Controller
             'content' => 'required|max:191',
         ]);
 
-        
-        $task = new Task;
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
-        
         $request->user()->tasks()->create([
-            'content' => $request->content,
+        'status' => $request->status,
+        'content' => $request->content,
         ]);
 
         return redirect('/');
@@ -84,18 +80,14 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-         $task = Task::find($id);
-
-        $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
-
-        $data = [
-            'user' => $user,
-            'tasks' => $tasks,
-        ];
-
-        $data += $this->counts($user);
-
-        return view('Tasks.show', $data);
+        $task = Task::find($id);
+        
+        if (\Auth::user()->id === $task->user_id){
+            return view('Tasks.show', [
+            'task' => $task,
+        ]);}
+        return redirect('/');
+      
     }
 
     /**
